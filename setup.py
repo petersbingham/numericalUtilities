@@ -2,10 +2,10 @@
 
 from distutils.core import setup
 
-setup(name='numericalUtilities',
-      version='0.0',
+setup(name='pynumutil',
+      version='0.1',
       description='Simple Numerical Utilities',
       author="Peter Bingham",
       author_email="petersbingham@hotmail.co.uk",
-      packages=['numericalUtilities'],
+      packages=['pynumutil'],
      )
