@@ -10,5 +10,5 @@ setup(name='pynumutil',
       author="Peter Bingham",
       author_email="petersbingham@hotmail.co.uk",
       packages=['pynumutil'],
-      package_data={'pynumutil': ['README.md'],
+      package_data={'pynumutil': ['README.md']}
      )
