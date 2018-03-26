@@ -135,3 +135,7 @@ def removeduplicateFloats(lst,comparator,accessor=None):
                     break
                 elif i == len(lst)-1:
                     iStart += 1
+
+def sciStr(n):
+    a = '%e' % n
+    return a.split('e')[0].rstrip('0').rstrip('.') + 'e' + a.split('e')[1]
