@@ -26,16 +26,16 @@ class NearlyEqual:
             self.imagType = args[2]
             self.imagVal = args[3]
 
-    def floatCompare(self, f1, f2, complex=False):
+    def float_compare(self, f1, f2, complex=False):
         if complex:
             return self._compare(f1, f2, self.imagType, self.imagVal)
         else:
             return self._compare(f1, f2, self.realType, self.realVal)
 
-    def complexCompare(self, c1, c2):
-        if not self.floatCompare(complex(c1).real, complex(c2).real, False):
+    def complex_compare(self, c1, c2):
+        if not self.float_compare(complex(c1).real, complex(c2).real, False):
             return False
-        if not self.floatCompare(complex(c1).imag, complex(c2).imag, True):
+        if not self.float_compare(complex(c1).imag, complex(c2).imag, True):
             return False
         return True
 
@@ -57,68 +57,68 @@ class NearlyEqual:
 
 
 class RationalCompare1:
-    def __init__(self, zeroValue=0.0, distThres=None):
-        self.distThres = distThres
-        self.zeroValue = zeroValue
+    def __init__(self, zero_value=0.0, dist_thres=None):
+        self.dist_thres = dist_thres
+        self.zero_value = zero_value
 
-    def isClose(self, cval1, cval2, distThres=None):
-        diff = self.getComplexDiff(cval1, cval2)
-        return self.checkComplexDiff(diff, distThres)
+    def is_close(self, cval1, cval2, dist_thres=None):
+        diff = self.get_complex_diff(cval1, cval2)
+        return self.check_complex_diff(diff, dist_thres)
 
-    def getComplexDiff(self, cval1, cval2):
-        realdiff = self._getDiff(cval2.real, cval1.real)
-        imagdiff = self._getDiff(cval2.imag, cval1.imag)
+    def get_complex_diff(self, cval1, cval2):
+        realdiff = self._get_diff(cval2.real, cval1.real)
+        imagdiff = self._get_diff(cval2.imag, cval1.imag)
         return realdiff + 1.0j*imagdiff
 
-    def checkComplexDiff(self, cdiff, distThres=None):
-        if distThres is None:
-            distThres = self.distThres
-        return cdiff.imag<distThres and cdiff.real<distThres
+    def check_complex_diff(self, cdiff, dist_thres=None):
+        if dist_thres is None:
+            dist_thres = self.dist_thres
+        return cdiff.imag<dist_thres and cdiff.real<dist_thres
 
-    def _getDiff(self, val1, val2):
+    def _get_diff(self, val1, val2):
         absVal1 = abs(val1)
         absVal2 = abs(val2)
-        if absVal1<=self.zeroValue and absVal2<=self.zeroValue:
+        if absVal1<=self.zero_value and absVal2<=self.zero_value:
             return 0.0
-        elif absVal1>self.zeroValue and absVal2>self.zeroValue:
-            return self._calDiff(val1, val2)
-        elif absVal1 > self.zeroValue:
-            return self._calDiff(val1, self.zeroValue)
+        elif absVal1>self.zero_value and absVal2>self.zero_value:
+            return self._cal_diff(val1, val2)
+        elif absVal1 > self.zero_value:
+            return self._cal_diff(val1, self.zero_value)
         else:
-            return self._calDiff(self.zeroValue, val2)
+            return self._cal_diff(self.zero_value, val2)
 
     #https://en.wikipedia.org/wiki/Relative_change_and_difference
-    def _calDiff(self, val1, val2):
+    def _cal_diff(self, val1, val2):
         absVal1 = abs(val1)
         absVal2 = abs(val2)
         valMax = absVal2 if (absVal1 < absVal2) else absVal1
         return abs(val2-val1) / valMax
 
 
-def absDiff(c1, c2):
+def abs_diff(c1, c2):
     return abs(c1-c2)
 
-def complexDiff(c1, c2):
+def complex_diff(c1, c2):
     return c1-c2
 
-def truncateFloat(dps, val):
+def truncate_float(dps, val):
     return float(("{0:."+str(dps)+"f}").format(val))
 
-def truncateComplex(dps, val):
-    return truncateFloat(dps,val.real) + truncateFloat(dps,val.imag)*1.0j
+def truncate_complex(dps, val):
+    return truncate_float(dps,val.real) + truncate_float(dps,val.imag)*1.0j
 
-def getPermutations(possVals, numOf):
+def get_permutations(poss_vals, numOf):
     if numOf == 1:
         perms = [[x] for x in possVals]
     else:
         perms = []
-        nextPerms = getPermutations(possVals, numOf-1)
-        for val in possVals:
+        nextPerms = get_permutations(poss_vals, numOf-1)
+        for val in poss_vals:
             for nextPerm in nextPerms:
                 perms.append([val]+nextPerm)
     return perms
 
-def removeDuplicateFloats(lst,comparator,accessor=None):
+def remove_duplicate_floats(lst, comparator, accessor=None):
     def _getVal(lst,i,accessor):
         if accessor:
             return accessor(lst[i])
@@ -130,12 +130,12 @@ def removeDuplicateFloats(lst,comparator,accessor=None):
         while iStart<len(lst)-1:
             comVal = _getVal(lst,iStart,accessor)
             for i in range(iStart+1, len(lst)):
-                if comparator.complexCompare(comVal,_getVal(lst,i,accessor)):
+                if comparator.complex_compare(comVal,_getVal(lst,i,accessor)):
                     lst.pop(i)
                     break
                 elif i == len(lst)-1:
                     iStart += 1
 
-def sciStr(n):
+def sci_str(n):
     a = '%e' % n
     return a.split('e')[0].rstrip('0').rstrip('.') + 'e' + a.split('e')[1]
