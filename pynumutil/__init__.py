@@ -3,7 +3,7 @@ min = pow(10,-precision)
 
 absolute = 0
 percent = 1
-class nearlyEqual:
+class NearlyEqual:
     def __init__(self, *args):
         if len(args) == 0:
             self.realType = absolute
@@ -56,7 +56,7 @@ class nearlyEqual:
         return True
 
 
-class rationalCompare1:
+class RationalCompare1:
     def __init__(self, zeroValue=0.0, distThres=None):
         self.distThres = distThres
         self.zeroValue = zeroValue
@@ -118,7 +118,7 @@ def getPermutations(possVals, numOf):
                 perms.append([val]+nextPerm)
     return perms
 
-def removeduplicateFloats(lst,comparator,accessor=None):
+def removeDuplicateFloats(lst,comparator,accessor=None):
     def _getVal(lst,i,accessor):
         if accessor:
             return accessor(lst[i])
