@@ -6,31 +6,31 @@ percent = 1
 class NearlyEqual:
     def __init__(self, *args):
         if len(args) == 0:
-            self.realType = absolute
-            self.realVal = min
-            self.imagType = absolute
-            self.imagVal = min
+            self.real_type = absolute
+            self.real_val = min
+            self.imag_type = absolute
+            self.imag_val = min
         if len(args) == 1:
-            self.realType = absolute
-            self.realVal = args[0]
-            self.imagType = absolute
-            self.imagVal = args[0]
+            self.real_type = absolute
+            self.real_val = args[0]
+            self.imag_type = absolute
+            self.imag_val = args[0]
         elif len(args) == 2:
-            self.realType = args[0]
-            self.realVal = args[1]
-            self.imagType = args[0]
-            self.imagVal = args[1]
+            self.real_type = args[0]
+            self.real_val = args[1]
+            self.imag_type = args[0]
+            self.imag_val = args[1]
         elif len(args) == 4:
-            self.realType = args[0]
-            self.realVal = args[1]
-            self.imagType = args[2]
-            self.imagVal = args[3]
+            self.real_type = args[0]
+            self.real_val = args[1]
+            self.imag_type = args[2]
+            self.imag_val = args[3]
 
     def float_compare(self, f1, f2, complex=False):
         if complex:
-            return self._compare(f1, f2, self.imagType, self.imagVal)
+            return self._compare(f1, f2, self.imag_type, self.imag_val)
         else:
-            return self._compare(f1, f2, self.realType, self.realVal)
+            return self._compare(f1, f2, self.real_type, self.real_val)
 
     def complex_compare(self, c1, c2):
         if not self.float_compare(complex(c1).real, complex(c2).real, False):
@@ -76,22 +76,22 @@ class RationalCompare1:
         return cdiff.imag<dist_thres and cdiff.real<dist_thres
 
     def _get_diff(self, val1, val2):
-        absVal1 = abs(val1)
-        absVal2 = abs(val2)
-        if absVal1<=self.zero_value and absVal2<=self.zero_value:
+        abs_val1 = abs(val1)
+        abs_val2 = abs(val2)
+        if abs_val1<=self.zero_value and abs_val2<=self.zero_value:
             return 0.0
-        elif absVal1>self.zero_value and absVal2>self.zero_value:
+        elif abs_val1>self.zero_value and abs_val2>self.zero_value:
             return self._cal_diff(val1, val2)
-        elif absVal1 > self.zero_value:
+        elif abs_val1 > self.zero_value:
             return self._cal_diff(val1, self.zero_value)
         else:
             return self._cal_diff(self.zero_value, val2)
 
     #https://en.wikipedia.org/wiki/Relative_change_and_difference
     def _cal_diff(self, val1, val2):
-        absVal1 = abs(val1)
-        absVal2 = abs(val2)
-        valMax = absVal2 if (absVal1 < absVal2) else absVal1
+        abs_val1 = abs(val1)
+        abs_val2 = abs(val2)
+        valMax = abs_val2 if (abs_val1 < abs_val2) else abs_val1
         return abs(val2-val1) / valMax
 
 
@@ -107,12 +107,12 @@ def truncate_float(dps, val):
 def truncate_complex(dps, val):
     return truncate_float(dps,val.real) + truncate_float(dps,val.imag)*1.0j
 
-def get_permutations(poss_vals, numOf):
-    if numOf == 1:
+def get_permutations(poss_vals, num_of):
+    if num_of == 1:
         perms = [[x] for x in possVals]
     else:
         perms = []
-        nextPerms = get_permutations(poss_vals, numOf-1)
+        nextPerms = get_permutations(poss_vals, num_of-1)
         for val in poss_vals:
             for nextPerm in nextPerms:
                 perms.append([val]+nextPerm)
@@ -126,15 +126,15 @@ def remove_duplicate_floats(lst, comparator, accessor=None):
             return lst[i]
 
     if len(lst) > 0:
-        iStart = 0
-        while iStart<len(lst)-1:
-            comVal = _getVal(lst,iStart,accessor)
-            for i in range(iStart+1, len(lst)):
-                if comparator.complex_compare(comVal,_getVal(lst,i,accessor)):
+        i_start = 0
+        while i_start<len(lst)-1:
+            com_val = _getVal(lst,i_start,accessor)
+            for i in range(i_start+1, len(lst)):
+                if comparator.complex_compare(com_val,_getVal(lst,i,accessor)):
                     lst.pop(i)
                     break
                 elif i == len(lst)-1:
-                    iStart += 1
+                    i_start += 1
 
 def sci_str(n):
     a = '%e' % n
