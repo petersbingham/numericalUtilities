@@ -57,35 +57,38 @@ class NearlyEqual:
 
 
 class RationalCompare1:
-    def __init__(self, zero_value=0.0, dist_thres=None):
-        self.dist_thres = dist_thres
-        self.zero_value = zero_value
+    def __init__(self, rtol=None, ztol=0.0):
+        self.rtol = rtol
+        self.ztol = ztol
 
-    def is_close(self, cval1, cval2, dist_thres=None):
+    def set_rtol(self, rtol):
+        self.rtol = rtol
+
+    def is_close(self, cval1, cval2, rtol=None):
         diff = self.get_complex_diff(cval1, cval2)
-        return self.check_complex_diff(diff, dist_thres)
+        return self.check_complex_diff(diff, rtol)
 
     def get_complex_diff(self, cval1, cval2):
         realdiff = self._get_diff(cval2.real, cval1.real)
         imagdiff = self._get_diff(cval2.imag, cval1.imag)
         return realdiff + 1.0j*imagdiff
 
-    def check_complex_diff(self, cdiff, dist_thres=None):
-        if dist_thres is None:
-            dist_thres = self.dist_thres
-        return cdiff.imag<dist_thres and cdiff.real<dist_thres
+    def check_complex_diff(self, cdiff, rtol=None):
+        if rtol is None:
+            rtol = self.rtol
+        return cdiff.imag<rtol and cdiff.real<rtol
 
     def _get_diff(self, val1, val2):
         abs_val1 = abs(val1)
         abs_val2 = abs(val2)
-        if abs_val1<=self.zero_value and abs_val2<=self.zero_value:
+        if abs_val1<=self.ztol and abs_val2<=self.ztol:
             return 0.0
-        elif abs_val1>self.zero_value and abs_val2>self.zero_value:
+        elif abs_val1>self.ztol and abs_val2>self.ztol:
             return self._cal_diff(val1, val2)
-        elif abs_val1 > self.zero_value:
-            return self._cal_diff(val1, self.zero_value)
+        elif abs_val1 > self.ztol:
+            return self._cal_diff(val1, self.ztol)
         else:
-            return self._cal_diff(self.zero_value, val2)
+            return self._cal_diff(self.ztol, val2)
 
     #https://en.wikipedia.org/wiki/Relative_change_and_difference
     def _cal_diff(self, val1, val2):

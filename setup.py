@@ -5,7 +5,7 @@ import shutil
 shutil.copy('README.md', 'pynumutil/README.md')
 
 setup(name='pynumutil',
-      version='0.6',
+      version='0.7',
       description='Simple Python Numerical Utilities.',
       author="Peter Bingham",
       author_email="petersbingham@hotmail.co.uk",
