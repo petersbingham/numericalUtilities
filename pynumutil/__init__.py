@@ -2,7 +2,7 @@ precision = 8
 min = pow(10,-precision)
 
 absolute = 0
-percent = 1
+relative = 1
 class NearlyEqual:
     def __init__(self, *args):
         if len(args) == 0:
