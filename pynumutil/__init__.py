@@ -139,6 +139,7 @@ def remove_duplicate_floats(lst, comparator, accessor=None):
                 elif i == len(lst)-1:
                     i_start += 1
 
+# Remove trailing zero from scientific notation string.
 def sci_str(n):
     a = '%e' % n
     return a.split('e')[0].rstrip('0').rstrip('.') + 'e' + a.split('e')[1]
