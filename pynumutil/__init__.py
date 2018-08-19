@@ -1,3 +1,5 @@
+from pynumutil.release import __version__
+
 precision = 8
 min = pow(10,-precision)
 
