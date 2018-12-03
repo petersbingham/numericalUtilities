@@ -25,3 +25,6 @@ There are two comparison classes `NearlyEqual` and `RationalCompare1`. More are 
 
 ### `RationalCompare1`
 This applies the formula |x-y| / max(|x|,|y|) separately to the real and imaginary components of two complex numbers x and y if both |x| and |y| are greater than some minimum value (`ztol`). If either |x| or |y| exclusively are less than or equal to `ztol` then the formula is applied using the minimum value for the smallest of |x| and |y|. If both |x| and |y| are less than or equal to `ztol` then zero is returned. `ztol` is optionally specified in the constructor of `RationalCompare1`, along with `rtol`, which specifies a value equal to or above which the numbers are deemed distinct.
+
+### `match_closest`
+For a container of shots matches each to the closest target from a container of targets. A condition is that a single shot can only be associated with a single target. Returns a list of two element lists; first element the target, second the closest shot.

@@ -145,3 +145,57 @@ def remove_duplicate_floats(lst, comparator, accessor=None):
 def sci_str(n):
     a = '%e' % n
     return a.split('e')[0].rstrip('0').rstrip('.') + 'e' + a.split('e')[1]
+
+def find_closest(target, shots):
+  closest_shot = None
+  for shot in shots:
+    if closest_shot is None or abs(float(shot)-target) < abs(float(closest_shot)-target):
+      closest_shot = float(shot)
+  return closest_shot
+
+def _lock_closest_(targets, equal_grp):
+  smallest_delta = None
+  smallest_index = None
+  for i in equal_grp:
+    delta = abs(targets[i][0] - targets[i][1])
+    if smallest_delta is None or smallest_delta > delta:
+      smallest_delta = delta
+      smallest_index = i
+  targets[smallest_index][2] = True
+
+def _lock_closest(targets, equal_grps):
+  for equal_grp in equal_grps.values():
+    _lock_closest_(targets, equal_grp)
+
+def match_closest(targets, shots):
+  if isinstance(targets[0], float) or isinstance(targets[0], int):
+    targets = [[target,None,False] for target in targets]
+  for target in targets:
+    if not target[2]:
+      target[1] = find_closest(target[0], shots)
+  equal_grps = {}
+  for i,target in enumerate(targets):    
+    if not target[2]:
+      if target[1] not in equal_grps:
+        equal_grps[target[1]] = [i]
+      else:
+        equal_grps[target[1]].append(i)
+  _lock_closest(targets, equal_grps)    
+
+  all_locked = True
+  for target in targets:
+    if target[2]:
+      try:
+        shots.discard(target[1])
+      except AttributeError:
+        try:
+          shots.remove(target[1])
+        except ValueError:
+          pass
+    else:
+      all_locked = False
+
+  if not all_locked:
+    return match_closest(targets, shots)
+  else:
+    return [[target[0], target[1]] for target in targets]
